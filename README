@@ -1,3 +1,71 @@
+On the 10.1-ugly branch is a semi working device tree for hp tenderloin cm10.1.
+It is a work in progress. Very much a WIP. 
+Sound doesn't work.
+Camera doesn't work.
+Most important: NO SDCARD!
 
-TBD
+This is heavily reliant on the work of Arne Coucheron.
+His invaluable patches include:
+http://review.cyanogenmod.org/#/c/34375
+http://review.cyanogenmod.org/#/c/34377/
+http://review.cyanogenmod.org/#/c/34374/
+and his highly useful doc:
+https://docs.google.com/document/d/1cGKMXx112gGls9a6ziDTpPgObnU6ZExPy5tByqqIyI4/edit?pli=1
+Without his work, I would still have no display.
+
+All my patches are in one big, ugly patch. I included various gerrit patches that
+my patch is dependent on.
+Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project name="CyanogenMod/hp-kernel-tenderloin" path="kernel/hp/tenderloin" remote="github" revision="ics" />
+  <project name="CyanogenMod/android_hardware_atheros_wlan" path="hardware/atheros/wlan" remote="github" revision="jellybean" />
+  <project name="arco/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.1" />
+  <project name="arco/android_hardware_qcom_media-legacy" path="hardware/qcom/media-legacy" remote="github" revision="cm-10.1" /> 
+</manifest>
+
+I clone my repo into device/hp/tenderloin. https://github.com/drmarble/android_device_hp_tenderloin.git
+(You know where it is or you wouldn't be able to read this)
+You could include it in the local manifest if you want.
+
+Additional patches that need to be applied:
+
+pushd external/tinyalsa
+# WIP: properly support multivalued controls
+git fetch http://review.cyanogenmod.org/CyanogenMod/android_external_tinyalsa refs/changes/46/33646/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd kernel/hp/tenderloin
+# Update MPU3050 kernel driver
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/33/29733/14 && git cherry-pick FETCH_HEAD
+# scale reported batt% where <=3% reports as 0%
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/18/31618/1 && git cherry-pick FETCH_HEAD
+# add backported vsprintf pV format
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/29/33629/1 && git cherry-pick FETCH_HEAD
+# tenderloin_wifi_power: add multiple enable/disable check
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/30/33630/1 && git cherry-pick FETCH_HEAD
+# video/msm: HACK to correct lcdc/mdp clocks ref counts
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/32/33632/1 && git cherry-pick FETCH_HEAD
+# Revert "Added wakelock short circuiting to allow wifi to sleep"
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/33/33633/1 && git cherry-pick FETCH_HEAD
+# defconfig: increase available kgsl memory
+git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/34/33634/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd frameworks/native
+# Fix building of hwcomposer for msm devices
+git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/69/30269/1 && git cherry-pick FETCH_HEAD
+# MemoryHeapBase: ifdef for gingerbread/froyo compatibility
+git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/75/34375/1 && git cherry-pick FETCH_HEAD
+popd
+
+pushd frameworks/av
+# Camera: QCOM legacy definitions,HTC cam switch,NO_UPDATE_PREVIEW
+git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/09/34409/6 && git cherry-pick FETCH_HEAD
+popd
+
+I think that this is everything. 
+If you figure out how to get the SDCARD to mount, let me know on freenode cyanogenmod-tenderloin, RootzWiki, or XDA.
+
 
