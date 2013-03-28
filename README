@@ -19,15 +19,15 @@ Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
 
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
+  <project name="drmarble/android_device_hp_tenderloin" path="device/hp/tenderloin" remote="github" revision="10.1-ugly" />
   <project name="CyanogenMod/hp-kernel-tenderloin" path="kernel/hp/tenderloin" remote="github" revision="ics" />
   <project name="CyanogenMod/android_hardware_atheros_wlan" path="hardware/atheros/wlan" remote="github" revision="jellybean" />
   <project name="arco/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.1" />
   <project name="arco/android_hardware_qcom_media-legacy" path="hardware/qcom/media-legacy" remote="github" revision="cm-10.1" /> 
 </manifest>
 
-I clone my repo into device/hp/tenderloin. https://github.com/drmarble/android_device_hp_tenderloin.git
-(You know where it is or you wouldn't be able to read this)
-You could include it in the local manifest if you want.
+Actually, I clone my repo into device/hp/tenderloin. https://github.com/drmarble/android_device_hp_tenderloin.git
+(You know where it is or you wouldn't be able to read this). I included it in the local manifest here for your convenience.
 
 Additional patches that need to be applied:
 
