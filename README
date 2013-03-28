@@ -2,7 +2,8 @@ On the 10.1-ugly branch is a semi working device tree for hp tenderloin cm10.1.
 It is a work in progress. Very much a WIP. 
 Sound doesn't work.
 Camera doesn't work.
-Most important: NO SDCARD!
+but...
+the SDCARD is mounted now! Thanks to James Sullins, aka jcsullins (who also made most of the other commits that get this working).
 
 This is heavily reliant on the work of Arne Coucheron.
 His invaluable patches include:
