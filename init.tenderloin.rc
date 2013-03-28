@@ -221,4 +221,6 @@ on property:init.svc.bootanim=stopped
     start thermald
     start mpdecision
 
+on post-fs-data
+	setprop vold.post_fs_data_done 1
 
