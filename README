@@ -1,7 +1,13 @@
 On the 10.1-ugly branch is a semi working device tree for hp tenderloin cm10.1.
 It is a work in progress. Very much a WIP. 
-Sound doesn't work.
 Camera doesn't work.
+Bluetooth doesn't work (somebody who cares should work on bluedroid, the cm10 bluetooth stack.)
+but...
+Now we have sound! Thanks again to James Sullins. You can remove one commit from the build script. 
+# MemoryHeapBase: ifdef for gingerbread/froyo compatibility #34375. 
+You can also undefine -DBINDER_CONFIG from Boardconfig.mk but this isn't necessary. 
+According to jcs he made things into ics libs. It's all magic to me.
+
 but...
 the SDCARD is mounted now! Thanks to James Sullins, aka jcsullins (who also made most of the other commits that get this working).
 
@@ -57,8 +63,6 @@ popd
 pushd frameworks/native
 # Fix building of hwcomposer for msm devices
 git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/69/30269/1 && git cherry-pick FETCH_HEAD
-# MemoryHeapBase: ifdef for gingerbread/froyo compatibility
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/75/34375/1 && git cherry-pick FETCH_HEAD
 popd
 
 pushd frameworks/av
