@@ -1,11 +1,12 @@
 On the 10.1-ugly branch is a semi working device tree for hp tenderloin cm10.1.
+NOTE: I am working on a different tree (b10.1) that has a cleaner set of commits to bring up cm10.1. I'll be doing most of my work over there. 
 It is a work in progress. Very much a WIP. 
-Camera doesn't work.
+Camera WORKS! Thank you Tomasz Rostanski (Dorregaray).
+We nolonger need the changes to frameworks/native and frameworks/av. Dorregaray's camera drivers work without them. By work, I mean there is a picture, upside down, stretched, no Settings... still more to do, but an excellent start. 
 Bluetooth doesn't work (somebody who cares should work on bluedroid, the cm10 bluetooth stack.)
 but...
-Now we have sound! Thanks again to James Sullins. You can remove one commit from the build script. 
-# MemoryHeapBase: ifdef for gingerbread/froyo compatibility #34375. 
-You can also undefine -DBINDER_CONFIG from Boardconfig.mk but this isn't necessary. 
+Now we have sound! Thanks again to James Sullins. You can remove more commits from the build script. 
+You can also undefine -DBINDER_CONFIG and BOARD_USES_LEGACY_OVERLAY:=true from Boardconfig.mk but this isn't necessary. 
 According to jcs he made things into ics libs. It's all magic to me.
 
 but...
@@ -13,15 +14,14 @@ the SDCARD is mounted now! Thanks to James Sullins, aka jcsullins (who also made
 
 This is heavily reliant on the work of Arne Coucheron.
 His invaluable patches include:
-http://review.cyanogenmod.org/#/c/34375
+Not needed anymore: http://review.cyanogenmod.org/#/c/34375
 http://review.cyanogenmod.org/#/c/34377/
 http://review.cyanogenmod.org/#/c/34374/
 and his highly useful doc:
 https://docs.google.com/document/d/1cGKMXx112gGls9a6ziDTpPgObnU6ZExPy5tByqqIyI4/edit?pli=1
 Without his work, I would still have no display.
 
-All my patches are in one big, ugly patch. I included various gerrit patches that
-my patch is dependent on.
+All my patches are in one big, ugly patch. Look at branch b10.1 for neater, separate commits. I included various gerrit patches that my patch is dependent on.
 Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -58,16 +58,6 @@ git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/ch
 git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/33/33633/1 && git cherry-pick FETCH_HEAD
 # defconfig: increase available kgsl memory
 git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/34/33634/1 && git cherry-pick FETCH_HEAD
-popd
-
-pushd frameworks/native
-# Fix building of hwcomposer for msm devices
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/69/30269/1 && git cherry-pick FETCH_HEAD
-popd
-
-pushd frameworks/av
-# Camera: QCOM legacy definitions,HTC cam switch,NO_UPDATE_PREVIEW
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_av refs/changes/09/34409/6 && git cherry-pick FETCH_HEAD
 popd
 
 I think that this is everything. 
