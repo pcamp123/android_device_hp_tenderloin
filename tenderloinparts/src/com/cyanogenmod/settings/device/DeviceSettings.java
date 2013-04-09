@@ -62,8 +62,6 @@ public class DeviceSettings extends Activity {
         mTabsAdapter = new TabsAdapter(this, mViewPager);
         mTabsAdapter.addTab(bar.newTab().setText(R.string.touchscreen_title),
                 TouchscreenFragmentActivity.class, null);
-        mTabsAdapter.addTab(bar.newTab().setText(R.string.camera_title),
-                CameraFragmentActivity.class, null);
 
         if (savedInstanceState != null) {
             bar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));

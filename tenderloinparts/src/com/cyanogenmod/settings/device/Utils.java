@@ -37,16 +37,13 @@ public class Utils {
      * @param filename The filename
      * @param value The value
      */
-    public static boolean writeValue(String filename, String value) {
+    public static void writeValue(String filename, String value) {
         FileOutputStream fos = null;
-        boolean success = false;
-
         try {
             fos = new FileOutputStream(new File(filename), false);
             fos.write(value.getBytes());
             fos.flush();
             // fos.getFD().sync();
-            success = true;
         } catch (FileNotFoundException ex) {
             Log.w(TAG, "file " + filename + " not found: " + ex);
         } catch (SyncFailedException ex) {
@@ -67,7 +64,7 @@ public class Utils {
                 }
             }
         }
-        return success;
+
     }
 
     /**
