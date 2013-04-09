@@ -115,10 +115,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/configs/audio_policy.conf:system/etc/audio_policy.conf
 
-# Camera
-PRODUCT_PACKAGES += \
-    camera.msm8660
-
 # Sensors, misc
 PRODUCT_PACKAGES += \
     librs_jni \
