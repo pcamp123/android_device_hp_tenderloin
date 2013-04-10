@@ -1,13 +1,11 @@
-On the b10.1 branch is a semi working device tree for hp tenderloin cm10.1.
+On the c10.1 branch is a semi working device tree for hp tenderloin cm10.1. This is the same as b10.1 but the camera commit are reverted because they used too much power (90mA sleep vs 20mA sleep)
 NOTE: This is almost identical to cm10.1-ugly but it isn't as ugly. I split the big cm10.1 commit into several, separate, explained commits. I plan to do all further work on this branch. Forgive my errors, I am new to git and github. 
 It is a work in progress. Very much a WIP. 
-Camera WORKS! Thank you Tomasz Rostanski (Dorregaray).
-We nolonger need the changes to frameworks/native and frameworks/av. Dorregaray's camera drivers work without them. By work, I mean there is a picture, upside down, stretched, no Settings... still more to do, but an excellent start. 
-Bluetooth doesn't work (somebody who cares should work on bluedroid, the cm10 bluetooth stack.)
-but...
-Now we have sound! Thanks again to James Sullins. You can remove more commits from the build script. 
-You can also undefine -DBINDER_CONFIG and BOARD_USES_LEGACY_OVERLAY:=true from Boardconfig.mk but this isn't necessary. 
-According to jcs he made things into ics libs. It's all magic to me.
+
+Camera is gone for now. 
+I don't think bluetooth works. We need a bluedroid config file among other stuff.
+
+Now we have sound! Thanks again to James Sullins. 
 
 but...
 the SDCARD is mounted now! Thanks to James Sullins, aka jcsullins (who also made most of the other commits that get this working).
@@ -25,7 +23,7 @@ Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
 
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <project name="drmarble/android_device_hp_tenderloin" path="device/hp/tenderloin" remote="github" revision="10.1-ugly" />
+  <project name="drmarble/android_device_hp_tenderloin" path="device/hp/tenderloin" remote="github" revision="c10.1" />
   <project name="CyanogenMod/hp-kernel-tenderloin" path="kernel/hp/tenderloin" remote="github" revision="ics" />
   <project name="CyanogenMod/android_hardware_atheros_wlan" path="hardware/atheros/wlan" remote="github" revision="jellybean" />
   <project name="arco/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.1" />
@@ -60,6 +58,6 @@ git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/ch
 popd
 
 I think that this is everything. 
-If you figure out how to get the SDCARD to mount, let me know on freenode cyanogenmod-tenderloin, RootzWiki, or XDA.
+If you figure out how to fix something like bluetooth (I don't own any), let me know on freenode cyanogenmod-tenderloin, RootzWiki, or XDA.
 
 
