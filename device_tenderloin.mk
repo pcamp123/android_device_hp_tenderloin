@@ -23,7 +23,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_CHARACTERISTICS := tablet
 
+# Device is xlarge screen, mdpi we need hdpi for some cm10.1 drawables but mdpi is preferable
 PRODUCT_AAPT_CONFIG := xlarge mdpi hdpi
+PRODUCT_AAPT_PREF_CONFIG := mdpi
 
 PRODUCT_PACKAGES += \
 	make_ext4fs
