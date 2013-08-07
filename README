@@ -1,63 +1,36 @@
-On the c10.1 branch is a semi working device tree for hp tenderloin cm10.1. This is the same as b10.1 but the camera commit are reverted because they used too much power (90mA sleep vs 20mA sleep)
-NOTE: This is almost identical to cm10.1-ugly but it isn't as ugly. I split the big cm10.1 commit into several, separate, explained commits. I plan to do all further work on this branch. Forgive my errors, I am new to git and github. 
-It is a work in progress. Very much a WIP. 
+This is a very preliminary cm-10.2 device tree.
 
-Camera is gone for now. 
-I don't think bluetooth works. We need a bluedroid config file among other stuff.
+Notice that I am not using arco's display-legacy repo now. It had to be changed for cm-10.2 compatibility. Use my cm-10.2 repo now.
 
-Now we have sound! Thanks again to James Sullins. 
+The SDCARD doesn't mount. We need more work on fstab.tenderloin. The problem seems to be mounting a virtual disk using vold. 
+I've been studying it but still haven't figured it out. It looks like there is some good information in sluo's github:
+https://github.com/steven676/android-lvm-mod
+Google really changed vold and it won't just let us mount dev/block/dm-6 anymore. I can manually mount the sdcard but it isn't vold managed so it doesn't really keep android happy. 
+We don't need the file 10check_media_minor now because we nolonger use vold.fstab. I left the file in because we may need something like it to get vold to work. We also don't need recovery.fstab; it has been included in fstab.tenderloin.
 
-but...
-the SDCARD is mounted now! Thanks to James Sullins, aka jcsullins (who also made most of the other commits that get this working).
-
-This is heavily reliant on the work of Arne Coucheron.
-His invaluable patches include:
-Not needed anymore: http://review.cyanogenmod.org/#/c/34375
-http://review.cyanogenmod.org/#/c/34377/
-http://review.cyanogenmod.org/#/c/34374/
-and his highly useful doc:
-https://docs.google.com/document/d/1cGKMXx112gGls9a6ziDTpPgObnU6ZExPy5tByqqIyI4/edit?pli=1
-Without his work, I would still have no display.
+No wifi, no sound, no bluetooth. Probably lots more missing. 
 
 Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
 
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <project name="drmarble/android_device_hp_tenderloin" path="device/hp/tenderloin" remote="github" revision="c10.1" />
+  <project name="drmarble/android_device_hp_tenderloin" path="device/hp/tenderloin" remote="github" revision="cm-10.2-WIP" />
   <project name="CyanogenMod/hp-kernel-tenderloin" path="kernel/hp/tenderloin" remote="github" revision="ics" />
   <project name="CyanogenMod/android_hardware_atheros_wlan" path="hardware/atheros/wlan" remote="github" revision="jellybean" />
-  <project name="arco/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.1" />
-  <project name="arco/android_hardware_qcom_media-legacy" path="hardware/qcom/media-legacy" remote="github" revision="cm-10.1" /> 
+  <project name="drmarble/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.2" />
+  <project name="arco/android_hardware_qcom_media-legacy" path="hardware/qcom/media-legacy" remote="github" revision="cm-10.1_old" /> 
 </manifest>
 
-Actually, I clone my repo into device/hp/tenderloin. https://github.com/drmarble/android_device_hp_tenderloin.git
-(You know where it is or you wouldn't be able to read this). I included it in the local manifest here for your convenience.
-
-Additional patches that need to be applied:
+You need to add this before building:
 
 pushd external/tinyalsa
 # WIP: properly support multivalued controls
 git fetch http://review.cyanogenmod.org/CyanogenMod/android_external_tinyalsa refs/changes/46/33646/1 && git cherry-pick FETCH_HEAD
 popd
 
-pushd kernel/hp/tenderloin
-# Update MPU3050 kernel driver
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/33/29733/14 && git cherry-pick FETCH_HEAD
-# scale reported batt% where <=3% reports as 0%
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/18/31618/1 && git cherry-pick FETCH_HEAD
-# add backported vsprintf pV format
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/29/33629/1 && git cherry-pick FETCH_HEAD
-# tenderloin_wifi_power: add multiple enable/disable check
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/30/33630/1 && git cherry-pick FETCH_HEAD
-# video/msm: HACK to correct lcdc/mdp clocks ref counts
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/32/33632/1 && git cherry-pick FETCH_HEAD
-# Revert "Added wakelock short circuiting to allow wifi to sleep"
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/33/33633/1 && git cherry-pick FETCH_HEAD
-# defconfig: increase available kgsl memory
-git fetch http://review.cyanogenmod.org/CyanogenMod/hp-kernel-tenderloin refs/changes/34/33634/1 && git cherry-pick FETCH_HEAD
-popd
 
 I think that this is everything. 
-If you figure out how to fix something like bluetooth (I don't own any), let me know on freenode cyanogenmod-tenderloin, RootzWiki, or XDA.
+If you figure out how to fix something let me know on freenode #cyanogenmod-tenderloin, RootzWiki, XDA, or just do a pull request here.
 
+Good luck to you all. 
 

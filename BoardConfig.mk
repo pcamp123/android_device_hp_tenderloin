@@ -20,7 +20,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-
+TARGET_CPU_VARIANT := cortex-a8
 
 TARGET_NO_RADIOIMAGE := true
 TARGET_HAVE_TSLIB := false
@@ -113,16 +113,14 @@ BOARD_NO_EXT4_LAZYINIT := true
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
 
-EXTRA_MODULES:
-	cd external/compat-wireless; ./scripts/driver-select ath6kl
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
-	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/compat-wireless KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE) install-modules
-	cp `find $(KERNEL_OUT)/$(TARGET_KERNEL_SOURCE) -name *.ko` $(KERNEL_MODULES_OUT)/
-	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-	cd external/compat-wireless; ./scripts/driver-select restore
-	$(MAKE) -C external/compat-wireless clean
+#EXTRA_MODULES:
+#	$(MAKE) -C external/backports defconfig-ath6kl
+#	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+#	cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
+#	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+#	$(MAKE) -C external/backports clean
 
-TARGET_KERNEL_MODULES := EXTRA_MODULES
+#TARGET_KERNEL_MODULES := EXTRA_MODULES
 
 
 # Define Prebuilt kernel locations
@@ -130,6 +128,8 @@ TARGET_PREBUILT_KERNEL := device/hp/tenderloin/prebuilt/boot/kernel
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/hp/tenderloin/recovery/recovery_ui.c
 TARGET_RECOVERY_INITRC := device/hp/tenderloin/recovery/init.rc
 BOARD_HAS_NO_SELECT_BUTTON := false
+TARGET_RECOVERY_FSTAB := device/hp/tenderloin/fstab.tenderloin
+RECOVERY_FSTAB_VERSION := 2
 
 # tenderloin - these partition sizes are temporary to complete build
 TARGET_USERIMAGES_USE_EXT4 := true

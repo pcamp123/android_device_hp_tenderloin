@@ -25,11 +25,13 @@ on init
     # not /dev/block
     symlink /dev/block/mmcblk0p14 /dev/mmcblk0p14
     exec /boot/bin/sh -c "LVM_SYSTEM_DIR=/boot/etc/lvm /boot/usr/sbin/lvm.static vgchange -ay"
+    # remount /boot read-only
+    mount ext3 /dev/block/mmcblk0p13 /boot remount ro wait noatime barrier=1
 
     # regular mounts
-    mount ext4 /dev/store/cm-system /system wait ro barrier=1
-    mount ext4 /dev/store/cm-data /data wait noatime nosuid nodev barrier=1 noauto_da_alloc
-    mount ext4 /dev/store/cm-cache /cache wait noatime nosuid nodev barrier=1
+#    mount ext4 /dev/store/cm-system /system wait ro barrier=1
+#    mount ext4 /dev/store/cm-data /data wait noatime nosuid nodev barrier=1 noauto_da_alloc
+#    mount ext4 /dev/store/cm-cache /cache wait noatime nosuid nodev barrier=1
 
     # remove all the lvm stuff as well as the moboot nextboot instruction
     exec /system/xbin/rm -rf /dev/mmcblk0p14 /lib /boot/moboot.next /var
@@ -44,6 +46,8 @@ on init
     # for backwards compatibility
     symlink /storage/sdcard0 /mnt/sdcard
     symlink /mnt/sdcard /sdcard
+
+    mount_all /fstab.tenderloin
 
 on post-fs
 	# camera calibration

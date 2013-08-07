@@ -155,14 +155,14 @@ PRODUCT_COPY_FILES += \
     device/hp/tenderloin/prebuilt/modules/tun.ko:system/lib/modules/tun.ko
 
 # Wifi Modules (commented out, files provded by kernel build)
-#PRODUCT_COPY_FILES += \
-#    device/hp/tenderloin/prebuilt/wifi/ath6kl.ko:system/lib/modules/ath6kl.ko \
-#    device/hp/tenderloin/prebuilt/wifi/ath.ko:system/lib/modules/ath.ko \
-#    device/hp/tenderloin/prebuilt/wifi/cfg80211.ko:system/lib/modules/cfg80211.ko \
-#    device/hp/tenderloin/prebuilt/wifi/mac80211.ko:system/lib/modules/mac80211.ko \
-#    device/hp/tenderloin/prebuilt/wifi/compat.ko:system/lib/modules/compat.ko \
-#    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko \
-#    device/hp/tenderloin/prebuilt/wifi/sch_fq_codel.ko:system/lib/modules/sch_fw_codel.ko
+PRODUCT_COPY_FILES += \
+    device/hp/tenderloin/prebuilt/wifi/ath6kl.ko:system/lib/modules/ath6kl.ko \
+    device/hp/tenderloin/prebuilt/wifi/ath.ko:system/lib/modules/ath.ko \
+    device/hp/tenderloin/prebuilt/wifi/cfg80211.ko:system/lib/modules/cfg80211.ko \
+    device/hp/tenderloin/prebuilt/wifi/mac80211.ko:system/lib/modules/mac80211.ko \
+    device/hp/tenderloin/prebuilt/wifi/compat.ko:system/lib/modules/compat.ko \
+    device/hp/tenderloin/prebuilt/wifi/sch_codel.ko:system/lib/modules/sch_codel.ko \
+    device/hp/tenderloin/prebuilt/wifi/sch_fq_codel.ko:system/lib/modules/sch_fw_codel.ko
 
 #Wifi Firmware
 # from kernel.org
@@ -209,7 +209,7 @@ PRODUCT_LOCALES += en_US mdpi
 PRODUCT_COPY_FILES += \
     device/hp/tenderloin/configs/media_profiles.xml:system/etc/media_profiles.xml \
     device/hp/tenderloin/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    device/hp/tenderloin/vold.fstab:system/etc/vold.fstab \
+    device/hp/tenderloin/fstab.tenderloin:root/fstab.tenderloin \
     device/hp/tenderloin/makemulti.sh:makemulti.sh \
     device/hp/tenderloin/prebuilt/boot/moboot.splash.CyanogenMod.tga:moboot.splash.CyanogenMod.tga
 
