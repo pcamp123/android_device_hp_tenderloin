@@ -1,12 +1,9 @@
 This is a very preliminary cm-10.2 device tree.
 
 Notice that I am not using arco's display-legacy repo now. It had to be changed for cm-10.2 compatibility. Use my cm-10.2 repo now.
+https://github.com/drmarble/android_hardware_qcom_media-legacy/tree/cm-10.2
 
-The SDCARD doesn't mount. We need more work on fstab.tenderloin. The problem seems to be mounting a virtual disk using vold. 
-I've been studying it but still haven't figured it out. It looks like there is some good information in sluo's github:
-https://github.com/steven676/android-lvm-mod
-Google really changed vold and it won't just let us mount dev/block/dm-6 anymore. I can manually mount the sdcard but it isn't vold managed so it doesn't really keep android happy. 
-We don't need the file 10check_media_minor now because we nolonger use vold.fstab. I left the file in because we may need something like it to get vold to work. We also don't need recovery.fstab; it has been included in fstab.tenderloin.
+SDCARD mounts now! Folks with odd installs (linux/ubuntu etc.) may have problems. We need to modify prebuilt/etc/init.d/10check_media_minor for the new fstab.tenderloin to accomodate them.
 
 No wifi, no sound, no bluetooth. Probably lots more missing. 
 
