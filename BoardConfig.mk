@@ -20,7 +20,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_SMP := true
 ARCH_ARM_HAVE_TLS_REGISTER := true
-TARGET_CPU_VARIANT := cortex-a8
+TARGET_CPU_VARIANT := scorpion
 
 TARGET_NO_RADIOIMAGE := true
 TARGET_HAVE_TSLIB := false
@@ -112,15 +112,16 @@ BOARD_NO_EXT4_LAZYINIT := true
 # Define kernel config for inline building
 TARGET_KERNEL_CONFIG := tenderloin_android_defconfig
 TARGET_KERNEL_SOURCE := kernel/hp/tenderloin
+# TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.4.3
 
-#EXTRA_MODULES:
-#	$(MAKE) -C external/backports defconfig-ath6kl
-#	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
-#	cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
-#	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
-#	$(MAKE) -C external/backports clean
+EXTRA_MODULES:
+	$(MAKE) -C external/backports defconfig-ath6kl
+	export CROSS_COMPILE=$(ARM_EABI_TOOLCHAIN)/arm-eabi-; $(MAKE) -C external/backports KLIB=$(KERNEL_SRC) KLIB_BUILD=$(KERNEL_OUT) ARCH=$(TARGET_ARCH) $(ARM_CROSS_COMPILE)
+	cp `find external/backports -name *.ko` $(KERNEL_MODULES_OUT)/
+	arm-eabi-strip --strip-debug `find $(KERNEL_MODULES_OUT) -name *.ko`
+	$(MAKE) -C external/backports clean
 
-#TARGET_KERNEL_MODULES := EXTRA_MODULES
+TARGET_KERNEL_MODULES := EXTRA_MODULES
 
 
 # Define Prebuilt kernel locations
