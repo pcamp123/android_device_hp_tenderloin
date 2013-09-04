@@ -1181,9 +1181,7 @@ void create_ts_socket(int *socket_fd) {
 		ALOGE("Error creating socket\n");
 #endif
 	// change perms to 0666 (438 decimal)
-	chmod(TS_SOCKET_LOCATION, 432);
-	//Sets owner/user to system
-	chown(TS_SOCKET_LOCATION, 1000,1000);
+	chmod(TS_SOCKET_LOCATION, 438);
 }
 
 void set_ts_mode(int mode){
@@ -1260,7 +1258,7 @@ void write_settings_file(int setting) {
 	fclose(fp);
 }
 
-void process_socket_buffer(char buffer[], int buffer_len, int *uart_fd,
+void process_socket_buffer(char *buffer[], int buffer_len, int *uart_fd,
 	int accept_fd) {
 	// Processes data that is received from the socket
 	// O = open uart
@@ -1271,8 +1269,7 @@ void process_socket_buffer(char buffer[], int buffer_len, int *uart_fd,
 	int i, return_val, buf;
 
 	for (i=0; i<buffer_len; i++) {
-		buf = (int)buffer[i];
-
+		buf = (int)*buffer;
 		if (buf == 67 /* 'C' */ && *uart_fd >= 0) {
 			return_val = close(*uart_fd);
 			*uart_fd = -1;
@@ -1282,8 +1279,8 @@ void process_socket_buffer(char buffer[], int buffer_len, int *uart_fd,
 			touchscreen_power(0);
 		}
 		if (buf == 79 /* 'O' */ && *uart_fd < 0) {
-			touchscreen_power(1);
 			open_uart(uart_fd);
+			touchscreen_power(1);
 #if DEBUG_SOCKET
 			ALOGD("uart opened at %i\n", *uart_fd);
 #endif
@@ -1336,10 +1333,10 @@ int main(int argc, char** argv)
 	if (sched_setscheduler(0 /* that's us */, SCHED_FIFO, &sparam))
 		perror("Cannot set RT priority, ignoring: ");
 
+	open_uart(&uart_fd);
 	init_digitizer_fd();
 	touchscreen_power(1);
 
-	open_uart(&uart_fd);
 
 	open_uinput();
 
@@ -1435,7 +1432,7 @@ int main(int argc, char** argv)
 					ALOGD("Socket received %i byte(s): '%s'\n", recv_ret,
 						recv_str);
 #endif
-					process_socket_buffer(recv_str, recv_ret,
+					process_socket_buffer((char **)&recv_str, recv_ret,
 						&uart_fd, accept_fd);
 				}
 #if DEBUG_SOCKET
