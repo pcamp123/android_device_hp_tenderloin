@@ -1,13 +1,30 @@
-This is a very preliminary cm-10.2 device tree.
+This is a somewhat less preliminary cm-10.2 device tree.
 
 Notice that I am not using arco's display-legacy repo now. It had to be changed for cm-10.2 compatibility. Use my cm-10.2 repo now.
 https://github.com/drmarble/android_hardware_qcom_media-legacy/tree/cm-10.2
 
-SDCARD mounts now! Folks with odd installs (linux/ubuntu etc.) may have problems. We need to modify prebuilt/etc/init.d/10check_media_minor for the new fstab.tenderloin to accomodate them.
+SDCARD mounts now! Folks with odd installs (linux/ubuntu etc.) may have problems. DONE-> thanks flintman! We need to modify prebuilt/etc/init.d/10check_media_minor for the new fstab.tenderloin to accomodate them. <-DONE
 
-No wifi, no sound, no bluetooth. Probably lots more missing. 
+We have wifi and sound, still no bluetooth or hologram projector.
 
-Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
+The wifi changes in wpa_supplicant_8 are again thanks to flintman. So are most of the sound changes in tinyalsa.
+
+The kernel config is modified to get rid of SElinux errors. We still don't use it but we nolonger fill the logcat with errors. It still needs someone to configure it who understands how it works. Something about start in promiscuous mode, take the logs, analyze them and then set it up. 
+
+Some recent changes to bootable recovery required that I break building CWM so we can keep our file system integrity with the custom fsck_msdos we build.
+
+There are several new changes you will need from my github (you are already here): 
+external/tinyalsa
+external/wpa_supplicant_8
+bootable/recovery
+kernel/hp/tenderloin
+device/hp/tenderloin
+These all should have a cm-10.2-WIP branch with the latest commits. 
+
+Ignore my changes to atheros/wlan. That wasn't a good solution.
+
+Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use: (actually, this is out of date, I'm just feeling to lazy to type up a new one)
+Just use "git remote add drmarble https://github.com/drmarble/android_external_wpa_supplicant_8.git" or whatever, use the little clone url button on the right side of the github screen for each repository. Or, just get my patches. If you go to the github commits and call one up, you can add .patch to the end of the url to get a plain text patch you can cut and paste into your editor. 
 
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
@@ -17,14 +34,6 @@ Here's the local_manifest.xml (local_manifests/roomservice.xml) file I use:
   <project name="drmarble/android_hardware_qcom_display-legacy" path="hardware/qcom/display-legacy" remote="github" revision="cm-10.2" />
   <project name="arco/android_hardware_qcom_media-legacy" path="hardware/qcom/media-legacy" remote="github" revision="cm-10.1_old" /> 
 </manifest>
-
-You need to add this before building:
-
-pushd external/tinyalsa
-# WIP: properly support multivalued controls
-git fetch http://review.cyanogenmod.org/CyanogenMod/android_external_tinyalsa refs/changes/46/33646/1 && git cherry-pick FETCH_HEAD
-popd
-
 
 I think that this is everything. 
 If you figure out how to fix something let me know on freenode #cyanogenmod-tenderloin, RootzWiki, XDA, or just do a pull request here.
