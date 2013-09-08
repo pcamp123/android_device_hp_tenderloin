@@ -7,6 +7,8 @@ SDCARD mounts now! Folks with odd installs (linux/ubuntu etc.) may have problems
 
 We have wifi and sound, still no bluetooth or hologram projector.
 
+The sound is very touchy. You have to turn off touch sounds. They break sound. If a notififation sound is the rirst produced sound you also lose sound and the logcat gets filled with sound errors. You have to play another sound first and then sound will work untill the next reboot. I just start out with a quick round of angry birds. You can also begin with playing something in apollo. Just watch out for those touch sounds.
+
 The wifi changes in wpa_supplicant_8 are again thanks to flintman. So are most of the sound changes in tinyalsa.
 
 The kernel config is modified to get rid of SElinux errors. We still don't use it but we nolonger fill the logcat with errors. It still needs someone to configure it who understands how it works. Something about start in promiscuous mode, take the logs, analyze them and then set it up. 
